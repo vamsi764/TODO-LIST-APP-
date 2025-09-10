@@ -1,7 +1,24 @@
 let todo = JSON.parse(localStorage.getItem('move')) || [];  
 displayTodo();
 displayCount();
-
+// document.querySelector(".js-form-container")
+// .addEventListener('keydown',function(event)
+// {
+//     if(event.key=='Enter')
+//     {
+//         addTodoMove();
+//     }
+//     console.log(event.key);
+// });
+document.querySelector(".js-form-container").
+addEventListener('submit',(event)=>
+{
+    if(event.key==='Enter')
+    {
+        event.preventDefault();
+        addTodoMove();
+    }
+});
 function addTodoMove() {
     const todoInputElement = document.querySelector(".js-todo-input");
     const todoDueElement = document.querySelector(".js-todo-due");
@@ -15,10 +32,7 @@ function addTodoMove() {
     }
 
     todo.push({ name: name, date: due });
-
-    
     localStorage.setItem('move', JSON.stringify(todo));
-
     displayTodo();
     displayCount();
     todoInputElement.value = '';
@@ -27,19 +41,46 @@ function addTodoMove() {
 
 function displayTodo() {
     let result = '';
-    for (let i = 0; i < todo.length; i++) {
-        const html = `
-        <p>${todo[i].name}</p>
-        <p>${todo[i].date}</p>
+    todo.forEach((value,index)=>
+    {
+        const html=`
+        <p>${value.name}</p>
+        <p>${value.date}</p>
         <button class="todo-delete-button" onclick="
-            todo.splice(${i},1);
+            todo.splice(${index},1);
             localStorage.setItem('move', JSON.stringify(todo));
             displayTodo();
             displayCount();
         ">Delete</button>
         `;
-        result += html;
-    }
+        result+=html;
+    });
+//     todo.forEach(function(value,index){
+//         const html=`
+//         <p>${value.name}</p>
+//         <p>${value.date}</p>
+//         <button class="todo-delete-button" onclick="
+//             todo.splice(${index},1);
+//             localStorage.setItem('move', JSON.stringify(todo));
+//             displayTodo();
+//             displayCount();
+//         ">Delete</button>
+//         `;
+//         result+=html;
+// });
+    // for (let i = 0; i < todo.length; i++) {
+    //     const html = `
+    //     <p>${todo[i].name}</p>
+    //     <p>${todo[i].date}</p>
+    //     <button class="todo-delete-button" onclick="
+    //         todo.splice(${i},1);
+    //         localStorage.setItem('move', JSON.stringify(todo));
+    //         displayTodo();
+    //         displayCount();
+    //     ">Delete</button>
+    //     `;
+    //     result += html;
+    // }
     document.querySelector(".js-todo-list").innerHTML = result;
 }
 function displayCount()
